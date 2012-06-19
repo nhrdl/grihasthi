@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Grihasthi
+Bundle-SymbolicName: com.niranjan.grihasthi; singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: com.niranjan.grihasthi.Activator
+Bundle-Vendor: NIRANJAN
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ com.orientechnologies.orient;bundle-version="1.0.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-ActivationPolicy: lazy
