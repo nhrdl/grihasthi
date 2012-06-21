@@ -8,6 +8,8 @@ Bundle-Vendor: NIRANJAN
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  com.orientechnologies.orient;bundle-version="1.0.0",
- com.richclientgui.rcptoolbox;bundle-version="1.0.5"
+ com.richclientgui.rcptoolbox;bundle-version="1.0.5",
+ org.eclipse.ui.intro;bundle-version="3.4.100",
+ org.eclipse.ui.forms;bundle-version="3.5.100"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy

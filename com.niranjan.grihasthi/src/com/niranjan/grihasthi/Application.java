@@ -30,11 +30,11 @@ public class Application implements IApplication {
 		try {
 
 			try {
-				server = com.orientechnologies.orient.server.OServerMain
-						.create();
-				server.startup(getOrientConfiguration());
-				server.activate();
-				initializeDatabase();
+				// server = com.orientechnologies.orient.server.OServerMain
+				// .create();
+				// server.startup(getOrientConfiguration());
+				// server.activate();
+				// initializeDatabase();
 
 			} catch (final Exception e) {
 				server = null;
@@ -55,7 +55,7 @@ public class Application implements IApplication {
 	static final String PRODUCT_DIR = "grihasthiData";
 	static final String PRODUCT_DATA = "grihasthiDB";
 
-	private void initializeDatabase() {
+	protected void initializeDatabase() {
 		final String userHome = System.getProperty("user.home");
 
 		final String dbDir = userHome + File.separatorChar + PRODUCT_DIR
@@ -100,10 +100,11 @@ public class Application implements IApplication {
 		if (!PlatformUI.isWorkbenchRunning()) {
 			return;
 		}
-		db.close();
-		server.shutdown();
-		server = null;
-
+		if (server != null) {
+			db.close();
+			server.shutdown();
+			server = null;
+		}
 		final IWorkbench workbench = PlatformUI.getWorkbench();
 		final Display display = workbench.getDisplay();
 		display.syncExec(new Runnable() {

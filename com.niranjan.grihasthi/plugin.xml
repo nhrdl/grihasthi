@@ -35,6 +35,13 @@
             class="com.niranjan.grihasthi.NavigationView"
             id="com.niranjan.grihasthi.navigationView">
       </view>
+      <view
+            class="com.niranjan.grihasthi.location.LocationView"
+            icon="icons/mail.ico"
+            id="com.niranjan.grihasthi.location.LocationView"
+            name="Location View"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
@@ -97,5 +104,37 @@
          </property>
       </product>
    </extension>
-
+   <extension 
+   		point="org.eclipse.ui.intro">
+        <intro
+            class="org.eclipse.ui.intro.config.CustomizableIntroPart"
+            id="com.niranjan.grihasthi.intro">
+      </intro>
+      <introProductBinding
+            introId="com.niranjan.grihasthi.intro"
+            productId="com.niranjan.grihasthi.product">
+      </introProductBinding>
+   </extension>
+   <extension
+         point="org.eclipse.ui.intro.config">
+      <config
+            introId="com.niranjan.grihasthi.intro"
+            content="introContent.xml"
+            id="com.niranjan.grihasthi.configId">
+         <presentation
+               home-page-id="root">
+            <implementation
+                  kind="html"
+                  os="win32,linux,macosx">
+            </implementation>
+         </presentation>
+      </config>
+   </extension>
+ <extension
+         point="org.eclipse.ui.intro.configExtension">
+      <configExtension
+            content="introext.xml"
+            configId="com.niranjan.grihasthi.configId">
+      </configExtension>
+   </extension>
 </plugin>
