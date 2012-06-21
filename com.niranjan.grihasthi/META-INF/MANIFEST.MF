@@ -7,6 +7,7 @@ Bundle-Activator: com.niranjan.grihasthi.Activator
 Bundle-Vendor: NIRANJAN
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- com.orientechnologies.orient;bundle-version="1.0.0"
+ com.orientechnologies.orient;bundle-version="1.0.0",
+ com.richclientgui.rcptoolbox;bundle-version="1.0.5"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
