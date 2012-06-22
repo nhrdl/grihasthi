@@ -34,7 +34,8 @@ public class LocationDialog extends Dialog {
 
 	@Override
 	protected void okPressed() {
-		// TODO Auto-generated method stub
-		super.okPressed();
+		if (locationEditor.isValid()) {
+			super.okPressed();
+		}
 	}
 }

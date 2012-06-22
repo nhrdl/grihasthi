@@ -7,9 +7,23 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-public class LocationEditor {
+import com.richclientgui.toolbox.validation.IFieldErrorMessageHandler;
+import com.richclientgui.toolbox.validation.ValidatingField;
+import com.richclientgui.toolbox.validation.string.StringValidationToolkit;
+import com.richclientgui.toolbox.validation.validator.IFieldValidator;
+
+public class LocationEditor implements IFieldErrorMessageHandler {
+
+	private StringValidationToolkit strValToolkit = null;
+	private ValidatingField<String> nameField;
+	private static final int DECORATOR_POSITION = SWT.TOP | SWT.LEFT;
+	private static final int DECORATOR_MARGIN_WIDTH = 1;
 
 	public LocationEditor(final Composite composite) {
+
+		strValToolkit = new StringValidationToolkit(DECORATOR_POSITION,
+				DECORATOR_MARGIN_WIDTH, true);
+		strValToolkit.setDefaultErrorMessageHandler(this);
 		final GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 2;
 
@@ -18,7 +32,31 @@ public class LocationEditor {
 		final Label label = new Label(composite, SWT.NONE);
 		label.setText("Name");
 
-		final Text name = new Text(composite, SWT.BORDER);
+		this.nameField = strValToolkit.createTextField(composite,
+				new IFieldValidator<String>() {
+
+					@Override
+					public boolean warningExist(final String arg0) {
+						return false;
+					}
+
+					@Override
+					public boolean isValid(final String contents) {
+						return !(contents.length() == 0);
+					}
+
+					@Override
+					public String getWarningMessage() {
+
+						return "";
+					}
+
+					@Override
+					public String getErrorMessage() {
+						return "Name may not be empty";
+					}
+				}, true, "");
+		final Text name = (Text) nameField.getControl();
 		final GridData nameGridData = new GridData();
 		nameGridData.horizontalAlignment = SWT.FILL;
 		nameGridData.grabExcessHorizontalSpace = true;
@@ -58,6 +96,29 @@ public class LocationEditor {
 		notesText
 				.setText("This text field and the List\nbelow share any excess space.");
 
+	}
+
+	@Override
+	public void handleErrorMessage(final String message, final String input) {
+		// setMessage(null, DialogPage.WARNING);
+		// setErrorMessage(message);
+	}
+
+	@Override
+	public void handleWarningMessage(final String message, final String input) {
+		// setErrorMessage(null);
+		// setMessage(message, DialogPage.WARNING);
+	}
+
+	@Override
+	public void clearMessage() {
+		// setErrorMessage(null);
+		// setMessage(null, DialogPage.WARNING);
+	}
+
+	public boolean isValid() {
+
+		return nameField.isValid();
 	}
 
 }
