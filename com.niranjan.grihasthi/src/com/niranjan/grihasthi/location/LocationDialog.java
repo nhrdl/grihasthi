@@ -6,6 +6,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
 import com.niranjan.grihasthi.data.LocationDBO;
+import com.niranjan.grihasthi.data.OrientDal;
 
 public class LocationDialog extends Dialog {
 
@@ -19,15 +20,17 @@ public class LocationDialog extends Dialog {
 	};
 
 	LocationEditor locationEditor;
+	private LocationDBO dbo;
 
 	@Override
 	protected Control createDialogArea(final Composite parent) {
-		final LocationDBO dbo = new LocationDBO();
+		dbo = new LocationDBO();
 		final String user = System.getProperty("user.name");
 
 		dbo.setName(user + "'s home");
 		dbo.setAddress("This is address");
 		dbo.setNotes("These are notes");
+
 		locationEditor = new LocationEditor(parent, dbo);
 
 		return super.createDialogArea(parent);
@@ -43,6 +46,7 @@ public class LocationDialog extends Dialog {
 	@Override
 	protected void okPressed() {
 		if (locationEditor.isValid()) {
+			OrientDal.save(dbo);
 			super.okPressed();
 		}
 	}

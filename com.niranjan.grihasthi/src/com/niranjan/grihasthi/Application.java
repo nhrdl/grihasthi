@@ -30,11 +30,11 @@ public class Application implements IApplication {
 		try {
 
 			try {
-				// server = com.orientechnologies.orient.server.OServerMain
-				// .create();
-				// server.startup(getOrientConfiguration());
-				// server.activate();
-				// initializeDatabase();
+				server = com.orientechnologies.orient.server.OServerMain
+						.create();
+				server.startup(getOrientConfiguration());
+				server.activate();
+				initializeDatabase();
 
 			} catch (final Exception e) {
 				server = null;
