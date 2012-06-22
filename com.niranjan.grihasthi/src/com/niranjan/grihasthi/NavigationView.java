@@ -1,6 +1,7 @@
 package com.niranjan.grihasthi;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
@@ -14,137 +15,190 @@ import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
+import com.niranjan.grihasthi.data.GrihasthiDBO;
+import com.niranjan.grihasthi.data.LocationDBO;
+import com.niranjan.grihasthi.data.OrientDal;
+
 public class NavigationView extends ViewPart {
 	public static final String ID = "com.niranjan.grihasthi.navigationView";
 	private TreeViewer viewer;
-	 
+
 	class TreeObject {
-		private String name;
+		private final String name;
 		private TreeParent parent;
-		
-		public TreeObject(String name) {
+		private GrihasthiDBO dataObject;
+
+		public TreeObject(final String name) {
 			this.name = name;
+
 		}
+
+		public TreeObject(final GrihasthiDBO obj) {
+			this.dataObject = obj;
+			this.name = dataObject.getTreeName();
+		}
+
 		public String getName() {
 			return name;
 		}
-		public void setParent(TreeParent parent) {
+
+		public void setParent(final TreeParent parent) {
 			this.parent = parent;
 		}
+
 		public TreeParent getParent() {
 			return parent;
 		}
+
+		@Override
 		public String toString() {
 			return getName();
 		}
 	}
-	
+
 	class TreeParent extends TreeObject {
-		private ArrayList children;
-		public TreeParent(String name) {
-			super(name);
-			children = new ArrayList();
+		private final ArrayList<TreeObject> children;
+
+		public TreeParent(final GrihasthiDBO obj) {
+			super(obj);
+			children = new ArrayList<TreeObject>();
 		}
-		public void addChild(TreeObject child) {
+
+		public TreeParent(final String name) {
+			super(name);
+			children = new ArrayList<TreeObject>();
+		}
+
+		public void addChild(final TreeObject child) {
 			children.add(child);
 			child.setParent(this);
 		}
-		public void removeChild(TreeObject child) {
+
+		public void removeChild(final TreeObject child) {
 			children.remove(child);
 			child.setParent(null);
 		}
+
 		public TreeObject[] getChildren() {
-			return (TreeObject[]) children.toArray(new TreeObject[children.size()]);
+			return children.toArray(new TreeObject[children.size()]);
 		}
+
 		public boolean hasChildren() {
-			return children.size()>0;
+			return children.size() > 0;
 		}
 	}
 
-	class ViewContentProvider implements IStructuredContentProvider, 
-										   ITreeContentProvider {
+	class ViewContentProvider implements IStructuredContentProvider,
+			ITreeContentProvider {
 
-        public void inputChanged(Viewer v, Object oldInput, Object newInput) {
+		@Override
+		public void inputChanged(final Viewer v, final Object oldInput,
+				final Object newInput) {
 		}
-        
+
+		@Override
 		public void dispose() {
 		}
-        
-		public Object[] getElements(Object parent) {
+
+		@Override
+		public Object[] getElements(final Object parent) {
 			return getChildren(parent);
 		}
-        
-		public Object getParent(Object child) {
+
+		@Override
+		public Object getParent(final Object child) {
 			if (child instanceof TreeObject) {
-				return ((TreeObject)child).getParent();
+				return ((TreeObject) child).getParent();
 			}
 			return null;
 		}
-        
-		public Object[] getChildren(Object parent) {
+
+		@Override
+		public Object[] getChildren(final Object parent) {
 			if (parent instanceof TreeParent) {
-				return ((TreeParent)parent).getChildren();
+				return ((TreeParent) parent).getChildren();
 			}
 			return new Object[0];
 		}
 
-        public boolean hasChildren(Object parent) {
-			if (parent instanceof TreeParent)
-				return ((TreeParent)parent).hasChildren();
+		@Override
+		public boolean hasChildren(final Object parent) {
+			if (parent instanceof TreeParent) {
+				return ((TreeParent) parent).hasChildren();
+			}
 			return false;
 		}
 	}
-	
+
 	class ViewLabelProvider extends LabelProvider {
 
-		public String getText(Object obj) {
+		@Override
+		public String getText(final Object obj) {
 			return obj.toString();
 		}
-		public Image getImage(Object obj) {
+
+		@Override
+		public Image getImage(final Object obj) {
 			String imageKey = ISharedImages.IMG_OBJ_ELEMENT;
-			if (obj instanceof TreeParent)
-			   imageKey = ISharedImages.IMG_OBJ_FOLDER;
-			return PlatformUI.getWorkbench().getSharedImages().getImage(imageKey);
+			if (obj instanceof TreeParent) {
+				imageKey = ISharedImages.IMG_OBJ_FOLDER;
+			}
+			return PlatformUI.getWorkbench().getSharedImages()
+					.getImage(imageKey);
 		}
 	}
 
-    /**
-     * We will set up a dummy model to initialize tree heararchy. In real
-     * code, you will connect to a real model and expose its hierarchy.
-     */
-    private TreeObject createDummyModel() {
-        TreeObject to1 = new TreeObject("Inbox");
-        TreeObject to2 = new TreeObject("Drafts");
-        TreeObject to3 = new TreeObject("Sent");
-        TreeParent p1 = new TreeParent("me@this.com");
-        p1.addChild(to1);
-        p1.addChild(to2);
-        p1.addChild(to3);
+	/**
+	 * We will set up a dummy model to initialize tree heararchy. In real code,
+	 * you will connect to a real model and expose its hierarchy.
+	 */
+	TreeObject createDummyModel() {
+		final TreeObject to1 = new TreeObject("Inbox");
+		final TreeObject to2 = new TreeObject("Drafts");
+		final TreeObject to3 = new TreeObject("Sent");
+		final TreeParent p1 = new TreeParent("me@this.com");
+		p1.addChild(to1);
+		p1.addChild(to2);
+		p1.addChild(to3);
 
-        TreeObject to4 = new TreeObject("Inbox");
-        TreeParent p2 = new TreeParent("other@aol.com");
-        p2.addChild(to4);
+		final TreeObject to4 = new TreeObject("Inbox");
+		final TreeParent p2 = new TreeParent("other@aol.com");
+		p2.addChild(to4);
 
-        TreeParent root = new TreeParent("");
-        root.addChild(p1);
-        root.addChild(p2);
-        return root;
-    }
+		final TreeParent root = new TreeParent("");
+		root.addChild(p1);
+		root.addChild(p2);
+		return root;
+	}
 
 	/**
-     * This is a callback that will allow us to create the viewer and initialize
-     * it.
-     */
-	public void createPartControl(Composite parent) {
-		viewer = new TreeViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
+	 * This is a callback that will allow us to create the viewer and initialize
+	 * it.
+	 */
+	@Override
+	public void createPartControl(final Composite parent) {
+		viewer = new TreeViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL
+				| SWT.BORDER);
 		viewer.setContentProvider(new ViewContentProvider());
 		viewer.setLabelProvider(new ViewLabelProvider());
-		viewer.setInput(createDummyModel());
+		viewer.setInput(createTreeModel());
+	}
+
+	private Object createTreeModel() {
+		final Collection<LocationDBO> locations = OrientDal.readData(
+				"select from " + LocationDBO.RECORD_TYPE,
+				OrientDal.LOCATION_INSTANCE_CREATOR);
+		final TreeParent root = new TreeParent("");
+		for (final LocationDBO locationDBO : locations) {
+			root.addChild(new TreeParent(locationDBO));
+		}
+		return root;
 	}
 
 	/**
 	 * Passing the focus request to the viewer's control.
 	 */
+	@Override
 	public void setFocus() {
 		viewer.getControl().setFocus();
 	}

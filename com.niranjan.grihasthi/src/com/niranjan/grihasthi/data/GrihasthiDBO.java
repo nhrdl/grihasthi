@@ -16,10 +16,14 @@ public class GrihasthiDBO implements PropertyChangeListener {
 	protected final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(
 			this);
 
-	public GrihasthiDBO() {
-		data = new ODocument();
+	public GrihasthiDBO(final String name) {
+		data = new ODocument(name);
 		final Date dt = new Date();
 		data.field(CREATION_DATE_KEY, dt);
+	}
+
+	public GrihasthiDBO(final ODocument data2) {
+		data = data2;
 	}
 
 	public String getStringValue(final String key) {
@@ -52,5 +56,9 @@ public class GrihasthiDBO implements PropertyChangeListener {
 
 	public ODocument getDocument() {
 		return data;
+	}
+
+	public String getTreeName() {
+		return "";
 	}
 }
