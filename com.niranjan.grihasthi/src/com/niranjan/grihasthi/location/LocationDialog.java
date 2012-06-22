@@ -5,6 +5,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
+import com.niranjan.grihasthi.data.LocationDBO;
+
 public class LocationDialog extends Dialog {
 
 	protected LocationDialog(final Shell parentShell) {

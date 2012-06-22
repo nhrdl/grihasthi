@@ -1,6 +1,5 @@
-package com.niranjan.grihasthi.location;
+package com.niranjan.grihasthi.data;
 
-import com.niranjan.grihasthi.data.GrihasthiDBO;
 
 public class LocationDBO extends GrihasthiDBO {
 
