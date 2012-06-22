@@ -20,7 +20,13 @@ public class LocationDialog extends Dialog {
 
 	@Override
 	protected Control createDialogArea(final Composite parent) {
-		locationEditor = new LocationEditor(parent);
+		final LocationDBO dbo = new LocationDBO();
+		final String user = System.getProperty("user.name");
+
+		dbo.setName(user + "'s home");
+		dbo.setAddress("This is address");
+		dbo.setNotes("These are notes");
+		locationEditor = new LocationEditor(parent, dbo);
 
 		return super.createDialogArea(parent);
 	}

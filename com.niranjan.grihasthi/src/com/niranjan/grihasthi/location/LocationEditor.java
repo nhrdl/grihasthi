@@ -1,5 +1,9 @@
 package com.niranjan.grihasthi.location;
 
+import org.eclipse.core.databinding.DataBindingContext;
+import org.eclipse.core.databinding.beans.BeansObservables;
+import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -18,9 +22,13 @@ public class LocationEditor implements IFieldErrorMessageHandler {
 	private ValidatingField<String> nameField;
 	private static final int DECORATOR_POSITION = SWT.TOP | SWT.LEFT;
 	private static final int DECORATOR_MARGIN_WIDTH = 1;
+	private final LocationDBO dbo;
+	private Text addressText;
+	private Text notesText;
 
-	public LocationEditor(final Composite composite) {
+	public LocationEditor(final Composite composite, final LocationDBO dbo) {
 
+		this.dbo = dbo;
 		strValToolkit = new StringValidationToolkit(DECORATOR_POSITION,
 				DECORATOR_MARGIN_WIDTH, true);
 		strValToolkit.setDefaultErrorMessageHandler(this);
@@ -69,7 +77,7 @@ public class LocationEditor implements IFieldErrorMessageHandler {
 		gridData.verticalAlignment = SWT.TOP;
 		addressLabel.setLayoutData(gridData);
 
-		final Text addressText = new Text(composite, SWT.BORDER | SWT.WRAP
+		this.addressText = new Text(composite, SWT.BORDER | SWT.WRAP
 				| SWT.MULTI);
 		gridData = new GridData();
 		gridData.horizontalAlignment = SWT.FILL;
@@ -77,26 +85,41 @@ public class LocationEditor implements IFieldErrorMessageHandler {
 		gridData.verticalAlignment = SWT.FILL;
 		gridData.grabExcessVerticalSpace = true;
 		addressText.setLayoutData(gridData);
-		addressText
-				.setText("This text field and the List\nbelow share any excess space.");
 
 		final Label notesLabel = new Label(composite, SWT.NONE);
-		notesLabel.setText("Address:");
+		notesLabel.setText("Notes:");
 		gridData = new GridData();
 		gridData.verticalAlignment = SWT.TOP;
 		addressLabel.setLayoutData(gridData);
 
-		final Text notesText = new Text(composite, SWT.BORDER | SWT.WRAP
-				| SWT.MULTI);
+		this.notesText = new Text(composite, SWT.BORDER | SWT.WRAP | SWT.MULTI);
 		gridData = new GridData();
 		gridData.horizontalAlignment = SWT.FILL;
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.verticalAlignment = SWT.FILL;
 		gridData.grabExcessVerticalSpace = true;
 		notesText.setLayoutData(gridData);
-		notesText
-				.setText("This text field and the List\nbelow share any excess space.");
 
+		initDataBindings();
+	}
+
+	private DataBindingContext initDataBindings() {
+		final DataBindingContext bindingContext = new DataBindingContext();
+		final Text name = (Text) nameField.getControl();
+		addBinding(bindingContext, name, "name");
+		addBinding(bindingContext, addressText, "address");
+		addBinding(bindingContext, notesText, "notes");
+		return bindingContext;
+
+	}
+
+	private void addBinding(final DataBindingContext bindingContext,
+			final Text field, final String property) {
+		final IObservableValue fieldObs = SWTObservables.observeText(field,
+				SWT.FocusOut);
+		final IObservableValue propObs = BeansObservables.observeValue(dbo,
+				property);
+		bindingContext.bindValue(fieldObs, propObs);
 	}
 
 	@Override
