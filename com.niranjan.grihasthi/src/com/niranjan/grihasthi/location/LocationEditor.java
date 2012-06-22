@@ -57,6 +57,7 @@ public class LocationEditor implements IFieldErrorMessageHandler {
 					}
 				}, true, "");
 		final Text name = (Text) nameField.getControl();
+
 		final GridData nameGridData = new GridData();
 		nameGridData.horizontalAlignment = SWT.FILL;
 		nameGridData.grabExcessHorizontalSpace = true;
