@@ -36,9 +36,10 @@
             id="com.niranjan.grihasthi.navigationView">
       </view>
       <view
-            class="com.niranjan.grihasthi.location.LocationView"
+            allowMultiple="true"
+            class="com.niranjan.grihasthi.location.LocationEditorView"
             icon="icons/mail.ico"
-            id="com.niranjan.grihasthi.location.LocationView"
+            id="com.niranjan.grihasthi.location.LocationEditorView"
             name="Location View"
             restorable="true">
       </view>
