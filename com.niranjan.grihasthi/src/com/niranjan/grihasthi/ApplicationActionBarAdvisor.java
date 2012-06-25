@@ -17,7 +17,6 @@ import org.eclipse.ui.actions.ActionFactory.IWorkbenchAction;
 import org.eclipse.ui.application.ActionBarAdvisor;
 import org.eclipse.ui.application.IActionBarConfigurer;
 
-import com.niranjan.grihasthi.location.LocationEditorView;
 import com.niranjan.grihasthi.location.LocationEditorViewAction;
 
 /**
@@ -65,8 +64,8 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 				"Open Another Message View", View.ID);
 		register(openViewAction);
 
-		locationEditAction = new LocationEditorViewAction(window, "Edit location", LocationEditorView.ID);
-		register(locationEditAction);
+		//		locationEditAction = new LocationEditorViewAction(window, "Edit location", LocationEditorView.ID);
+		//		register(locationEditAction);
 
 		messagePopupAction = new MessagePopupAction("Open Message", window);
 		register(messagePopupAction);

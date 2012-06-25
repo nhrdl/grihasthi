@@ -9,21 +9,31 @@ import com.orientechnologies.orient.core.record.impl.ODocument;
 
 public class GrihasthiDBO implements PropertyChangeListener {
 
+	public enum ObjectType {
+		Location
+	}
 	ODocument data;
 	public String CREATION_DATE_KEY = "creationDate",
 			LAST_MODIFIED_DATE_KEY = "lastModifiedDate";
 
 	protected final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(
 			this);
+	private final ObjectType objectType;
 
-	public GrihasthiDBO(final String name) {
+	public GrihasthiDBO(final String name, final ObjectType oType) {
 		data = new ODocument(name);
 		final Date dt = new Date();
 		data.field(CREATION_DATE_KEY, dt);
+		this.objectType = oType;
 	}
 
-	public GrihasthiDBO(final ODocument data2) {
+	public ObjectType getObjectType() {
+		return objectType;
+	}
+
+	public GrihasthiDBO(final ODocument data2, final ObjectType oType) {
 		data = data2;
+		this.objectType = oType;
 	}
 
 	public String getStringValue(final String key) {

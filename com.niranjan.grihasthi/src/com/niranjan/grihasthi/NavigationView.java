@@ -3,9 +3,12 @@ package com.niranjan.grihasthi;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.eclipse.jface.viewers.DoubleClickEvent;
+import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
@@ -54,6 +57,10 @@ public class NavigationView extends ViewPart {
 		public String toString() {
 			return getName();
 		}
+
+		public GrihasthiDBO getDataObject() {
+			return dataObject;
+		}
 	}
 
 	class TreeParent extends TreeObject {
@@ -89,7 +96,7 @@ public class NavigationView extends ViewPart {
 	}
 
 	class ViewContentProvider implements IStructuredContentProvider,
-			ITreeContentProvider {
+	ITreeContentProvider {
 
 		@Override
 		public void inputChanged(final Viewer v, final Object oldInput,
@@ -182,6 +189,22 @@ public class NavigationView extends ViewPart {
 		viewer.setContentProvider(new ViewContentProvider());
 		viewer.setLabelProvider(new ViewLabelProvider());
 		viewer.setInput(createTreeModel());
+		viewer.addDoubleClickListener(new IDoubleClickListener() {
+
+			@Override
+			public void doubleClick(final DoubleClickEvent event) {
+				final TreeSelection sel = (TreeSelection) event.getSelection();
+				final TreeObject item = (TreeObject) sel.getFirstElement();
+				final GrihasthiDBO data = item.getDataObject();
+				switch (data.getObjectType()) {
+				case Location: {
+					// LocationDBO obj = (LocationDBO) data;
+				}
+				break;
+				}
+				System.out.println(item);
+			}
+		});
 	}
 
 	private Object createTreeModel() {

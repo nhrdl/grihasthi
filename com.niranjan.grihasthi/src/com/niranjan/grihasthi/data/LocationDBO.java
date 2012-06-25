@@ -9,11 +9,11 @@ public class LocationDBO extends GrihasthiDBO {
 			NOTES_KEY = "notes";
 
 	public LocationDBO() {
-		super(RECORD_TYPE);
+		super(RECORD_TYPE, ObjectType.Location);
 	}
 
 	public LocationDBO(final ODocument data) {
-		super(data);
+		super(data, ObjectType.Location);
 	}
 
 	public String getName() {
