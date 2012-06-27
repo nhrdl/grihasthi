@@ -7,6 +7,8 @@ import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.EditorPart;
 
+import com.niranjan.grihasthi.data.OrientDal;
+
 public class LocationEditorView extends EditorPart {
 
 	public static final String ID = "com.niranjan.grihasthi.location.LocationEditorView";
@@ -32,8 +34,8 @@ public class LocationEditorView extends EditorPart {
 
 	@Override
 	public void doSave(final IProgressMonitor monitor) {
-		// TODO Auto-generated method stub
-
+		final LocationEditorInput ip = (LocationEditorInput) getEditorInput();
+		OrientDal.save(ip.getLocation());
 	}
 
 	@Override

@@ -35,7 +35,9 @@ public class LocationEditorInput implements IEditorInput {
 
 	@Override
 	public String getName() {
-		return location.getName();
+
+		final String name = location.getName();
+		return name != null ? name : "New location";
 	}
 
 	@Override
