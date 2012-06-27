@@ -26,6 +26,7 @@ public class LocationEditor implements IFieldErrorMessageHandler {
 	private final LocationDBO dbo;
 	private Text addressText;
 	private Text notesText;
+	private Text name;
 
 	public LocationEditor(final Composite composite, final LocationDBO dbo) {
 
@@ -65,7 +66,7 @@ public class LocationEditor implements IFieldErrorMessageHandler {
 						return "Name may not be empty";
 					}
 				}, true, "");
-		final Text name = (Text) nameField.getControl();
+		this.name = (Text) nameField.getControl();
 
 		final GridData nameGridData = new GridData();
 		nameGridData.horizontalAlignment = SWT.FILL;
@@ -144,6 +145,11 @@ public class LocationEditor implements IFieldErrorMessageHandler {
 	public boolean isValid() {
 
 		return nameField.isValid();
+	}
+
+	public void setFocus() {
+
+		name.setFocus();
 	}
 
 }

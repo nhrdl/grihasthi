@@ -7,31 +7,27 @@ import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.EditorPart;
 
-import com.niranjan.grihasthi.data.LocationDBO;
-
 public class LocationEditorView extends EditorPart {
 
 	public static final String ID = "com.niranjan.grihasthi.location.LocationEditorView";
 	private LocationEditor locationEditor;
-	private LocationDBO dbo;
 
 	@Override
 	public void createPartControl(final Composite parent) {
-		dbo = new LocationDBO();
-		final String user = System.getProperty("user.name");
+		final LocationEditorInput ip = (LocationEditorInput) getEditorInput();
+		// dbo = new LocationDBO();
+		// final String user = System.getProperty("user.name");
+		//
+		// dbo.setName(user + "'s home");
+		// dbo.setAddress("This is address");
+		// dbo.setNotes("These are notes");
 
-		dbo.setName(user + "'s home");
-		dbo.setAddress("This is address");
-		dbo.setNotes("These are notes");
-
-		locationEditor = new LocationEditor(parent, dbo);
+		locationEditor = new LocationEditor(parent, ip.getLocation());
 	}
 
 	@Override
 	public void setFocus() {
-		// TODO Auto-generated method stub
-		locationEditor.toString();
-		dbo.toString();
+		locationEditor.setFocus();
 	}
 
 	@Override
@@ -51,19 +47,18 @@ public class LocationEditorView extends EditorPart {
 			throws PartInitException {
 		setInput(input);
 		setSite(site);
-		setPartName("Editing location:");
+		final LocationEditorInput ip = (LocationEditorInput) getEditorInput();
+		setPartName("Location:" + ip.getName());
 	}
 
 	@Override
 	public boolean isDirty() {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override
 	public boolean isSaveAsAllowed() {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 }

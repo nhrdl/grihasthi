@@ -16,17 +16,19 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.handlers.IHandlerService;
 import org.eclipse.ui.part.ViewPart;
 
 import com.niranjan.grihasthi.data.GrihasthiDBO;
 import com.niranjan.grihasthi.data.LocationDBO;
 import com.niranjan.grihasthi.data.OrientDal;
+import com.niranjan.grihasthi.location.LocationEditorView;
 
 public class NavigationView extends ViewPart {
 	public static final String ID = "com.niranjan.grihasthi.navigationView";
 	private TreeViewer viewer;
 
-	class TreeObject {
+	public class TreeObject {
 		private final String name;
 		private TreeParent parent;
 		private GrihasthiDBO dataObject;
@@ -96,7 +98,7 @@ public class NavigationView extends ViewPart {
 	}
 
 	class ViewContentProvider implements IStructuredContentProvider,
-	ITreeContentProvider {
+			ITreeContentProvider {
 
 		@Override
 		public void inputChanged(final Viewer v, final Object oldInput,
@@ -198,13 +200,24 @@ public class NavigationView extends ViewPart {
 				final GrihasthiDBO data = item.getDataObject();
 				switch (data.getObjectType()) {
 				case Location: {
+					final IHandlerService handlerService = (IHandlerService) getSite()
+							.getService(IHandlerService.class);
+					try {
+						handlerService.executeCommand(LocationEditorView.ID,
+								null);
+					} catch (final Exception ex) {
+						throw new RuntimeException(LocationEditorView.ID
+								+ " not found");
+					}
 					// LocationDBO obj = (LocationDBO) data;
 				}
-				break;
+					break;
 				}
 				System.out.println(item);
 			}
 		});
+
+		getSite().setSelectionProvider(viewer);
 	}
 
 	private Object createTreeModel() {

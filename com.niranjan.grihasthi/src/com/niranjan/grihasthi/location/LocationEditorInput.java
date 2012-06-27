@@ -4,9 +4,15 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IPersistableElement;
 
+import com.niranjan.grihasthi.data.LocationDBO;
+
 public class LocationEditorInput implements IEditorInput {
 
-	public LocationEditorInput(final String name) {
+	private final LocationDBO location;
+
+	public LocationEditorInput(final LocationDBO location) {
+		this.location = location;
+
 	}
 
 	@Override
@@ -29,7 +35,7 @@ public class LocationEditorInput implements IEditorInput {
 
 	@Override
 	public String getName() {
-		return "Location input";
+		return location.getName();
 	}
 
 	@Override
@@ -43,4 +49,7 @@ public class LocationEditorInput implements IEditorInput {
 		return "Edit location";
 	}
 
+	public LocationDBO getLocation() {
+		return location;
+	}
 }
