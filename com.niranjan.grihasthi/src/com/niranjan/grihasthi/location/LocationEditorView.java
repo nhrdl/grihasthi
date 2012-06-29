@@ -5,6 +5,7 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.EditorPart;
@@ -22,6 +23,7 @@ public class LocationEditorView extends EditorPart {
 		@Override
 		public void modifyText(final ModifyEvent e) {
 			dirty = true;
+			firePropertyChange(IEditorPart.PROP_DIRTY);
 		}
 	};
 
@@ -49,6 +51,8 @@ public class LocationEditorView extends EditorPart {
 	public void doSave(final IProgressMonitor monitor) {
 		final LocationEditorInput ip = (LocationEditorInput) getEditorInput();
 		OrientDal.save(ip.getLocation());
+		dirty = false;
+		firePropertyChange(IEditorPart.PROP_DIRTY);
 	}
 
 	@Override
