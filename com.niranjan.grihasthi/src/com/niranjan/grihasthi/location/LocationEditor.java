@@ -5,6 +5,7 @@ import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -28,7 +29,8 @@ public class LocationEditor implements IFieldErrorMessageHandler {
 	private Text notesText;
 	private Text name;
 
-	public LocationEditor(final Composite composite, final LocationDBO dbo) {
+	public LocationEditor(final Composite composite, final LocationDBO dbo,
+			final ModifyListener modifyListener) {
 
 		this.dbo = dbo;
 		strValToolkit = new StringValidationToolkit(DECORATOR_POSITION,
@@ -67,7 +69,7 @@ public class LocationEditor implements IFieldErrorMessageHandler {
 					}
 				}, true, "");
 		this.name = (Text) nameField.getControl();
-
+		name.addModifyListener(modifyListener);
 		final GridData nameGridData = new GridData();
 		nameGridData.horizontalAlignment = SWT.FILL;
 		nameGridData.grabExcessHorizontalSpace = true;

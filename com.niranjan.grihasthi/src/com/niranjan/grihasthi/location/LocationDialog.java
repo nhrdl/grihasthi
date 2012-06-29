@@ -31,7 +31,7 @@ public class LocationDialog extends Dialog {
 		dbo.setAddress("This is address");
 		dbo.setNotes("These are notes");
 
-		locationEditor = new LocationEditor(parent, dbo);
+		locationEditor = new LocationEditor(parent, dbo, null);
 
 		return super.createDialogArea(parent);
 	}

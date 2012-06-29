@@ -1,6 +1,8 @@
 package com.niranjan.grihasthi.location;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
@@ -12,6 +14,15 @@ public class LocationEditorView extends EditorPart {
 	public static final String ID = "com.niranjan.grihasthi.location.LocationEditorView";
 	private LocationEditor locationEditor;
 
+	boolean dirty = false;
+	ModifyListener modifyListener = new ModifyListener() {
+
+		@Override
+		public void modifyText(final ModifyEvent e) {
+			dirty = true;
+		}
+	};
+
 	@Override
 	public void createPartControl(final Composite parent) {
 		final LocationEditorInput ip = (LocationEditorInput) getEditorInput();
@@ -22,7 +33,9 @@ public class LocationEditorView extends EditorPart {
 		// dbo.setAddress("This is address");
 		// dbo.setNotes("These are notes");
 
-		locationEditor = new LocationEditor(parent, ip.getLocation());
+		locationEditor = new LocationEditor(parent, ip.getLocation(),
+				modifyListener);
+		dirty = false;
 	}
 
 	@Override
@@ -53,7 +66,7 @@ public class LocationEditorView extends EditorPart {
 
 	@Override
 	public boolean isDirty() {
-		return true;
+		return dirty;
 	}
 
 	@Override
