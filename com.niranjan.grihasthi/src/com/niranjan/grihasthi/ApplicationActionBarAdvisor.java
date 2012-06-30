@@ -34,6 +34,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 	private OpenViewAction openViewAction;
 	private Action messagePopupAction;
 	private IWorkbenchAction introAction;
+	private IWorkbenchAction saveAction;
 
 	public ApplicationActionBarAdvisor(final IActionBarConfigurer configurer) {
 		super(configurer);
@@ -70,6 +71,8 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 
 		introAction = ActionFactory.INTRO.create(window);
 		register(introAction);
+
+		saveAction = ActionFactory.SAVE.create(window);
 	}
 
 	@Override
@@ -103,5 +106,6 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 		coolBar.add(new ToolBarContributionItem(toolbar, "main"));
 		toolbar.add(openViewAction);
 		toolbar.add(messagePopupAction);
+		toolbar.add(saveAction);
 	}
 }
